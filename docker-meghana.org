@@ -19,6 +19,19 @@ Advantages of docker :-
   running on a single machine than you can with virtualization alone.
 + Another powerful impact is that container bringup and bringdown can be
   accomplished within seconds.
+* What can we do with Docker
++ Create and destroy containers
++ Build and remove images
++ List all active/non-active containers
++ List all images present locally
++ Search,push and pull images from Docker Hub
++ Install applications inside containers 
++ Run a container forever
++ Can get inside a container which is running in background
++ Save the state of a container
++ Containers can communicate with each other
++ Deploy applications
+ 
 * How to Install docker on Ubuntu 14.04
   Installation Instructions for Ubuntu:
 + Update your droplet ::
@@ -221,7 +234,7 @@ docker ps [options]
     #+END_SRC
     OR
     #+BEGIN_SRC command
-    docker ps -ax
+    docker ps -as
     #+END_SRC
 ** List processes in a container 
  + Display the running processes of a container
