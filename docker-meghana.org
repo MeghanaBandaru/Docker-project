@@ -103,6 +103,10 @@ Server:
      will create a container and then will execute the command =echo= 
 
 ** Create/delete Image
+Docker images are the basis of containers. An Image is an ordered collection of
+root filesystem changes and the corresponding execution parameters for use
+within a container runtime. An image does not have state and it never changes.
+
  + Creating image ::
    One can save the state of a container and thus can create its image:
    #+BEGIN_SRC command
@@ -114,70 +118,6 @@ Server:
    #+END_SRC
    - If you run "docker images" you can verify your image
 
- + Another way to create image :: Docker File  
-   + Configuration file used to build docker images
-   + More effective and easier compared to docker commit
-   + Docker file instructions
-     + FROM: for specifying the base image
-     + RUN: for specifying commands to execute
-     #+BEGIN_SRC command 
-     #Example of a Docker File
-     FROM ubuntu:14.04
-     RUN apt-get install -y  vim
-     RUN apt-get insatll -y curl
-     #+END_SRC
-
-     OR
-
-     #+BEGIN_SRC command
-     #Just another way of Docker File
-     FROM ubuntu:14.04
-     RUN apt-get update && apt-get install -y vim \
-                                         curl
-     #+END_SRC
-     - The second method of dockerfile is more preferable as in first case for each run
-       command an intermediate container gets created and destroyed where as in
-       second method only one intermediate container will get created and destroyed
-     - Thus Second method is more preferable.
-
- + Building the Docker File ::
-    #+BEGIN_SRC command
-    docker build -t <repository:tag> <path>
-    #+END_SRC
-    - Now you can use this image "<repository>:<tag>" to create containers
- + Some more info on Dockerfile ::
-    + CMD Instruction
-      - defines a default command that will execute when the container is
-        created/started whose base image is built using dockerfile
-      - will not perform any action when the image is being created
-      - can only be specified once in a dockerfile
-      - can be overriden at run time
-      For eg:
-      #+BEGIN_SRC command
-      FROM ubuntu:14.04
-      RUN apt-get update && apt-get install -y vim \
-                                         curl
-      CMD ping 127.0.0.1 -c 10                                       
-      #+END_SRC 
-   + ENTRYPOINT instruction
-     - defines the command that will run when the container is executed
-     - differnt from CMD instruction as ENTRYPOINT instruction will accept
-       arguments at run time
-     For eg:
-     #+BEGIN_SRC command
-     FROM ubuntu:14.04
-     RUN apt-get update && apt-get install -y vim \
-                                         curl
-     ENTRYPOINT ["ping"]                                      
-     #+END_SRC 
-     - The ENTRYPOINT instruction is given in exec form which will take
-       parameters in json format as it has to accept args at run time
-     - CMD instruction can also be given in esec format 
-     - For creating a container using the above Dockerfile:
-     #+BEGIN_SRC command
-     docker run <repository>:<tag> 127.0.0.1
-     #+END_SRC
- 
  + Deleting Images ::
    #+BEGIN_SRC command
    docker rmi <Image ID>
@@ -186,6 +126,7 @@ Server:
      containers
 
 ** Create/Destroy a container 
+ + A container is a runtime instance of a docker image.
  + Create a new container ::
    #+BEGIN_SRC command
    docker create [OPTIONS] IMAGE [COMMAND] [ARG...]
@@ -277,6 +218,13 @@ docker ps [options]
     #+BEGIN_SRC command
     CTRL+P+Q
     #+END_SRC
++ Auto restart Containers ::
+   #+BEGIN_SRC command
+   docker run [options] --restart=always [image] [command]
+   #+END_SRC
+   - we need to specify whether you want to auto-start your container at the
+     time of its creation
+
 ** Get inside container 
 *** Case 1 :: You want to enter into a container as soon as you create it
 #+BEGIN_SRC command
@@ -321,13 +269,170 @@ CTRL+P+Q
   docker commit edb2a9774df0 meghana/my_app:1.0
   #+END_SRC
 - If you run "docker images" you can verify your image
+** Setting up proxy and name server in Docker Containers
+   + Get inside a Docker container and follow these steps
+   #+BEGIN_SRC 
+   export http_proxy="http://10.4.20.103:8080"
+   export https_proxy="http://10.4.20.103:8080"
+   echo -e 'Acquire::http::proxy "http://10.4.20.103:8080/";\nAcquire::https::proxy "http://10.4.20.103:8080/";' > /etc/apt/apt.conf 
+   #+END_SRC
+   OR
+   #+BEGIN_SRC 
+   export http_proxy="http://proxy.iiit.ac.in:8080"
+   export https_proxy="http://proxy.iiit.ac.in:8080"				
+   echo -e 'Acquire::http::proxy "http://proxy.iiit.ac.in:8080/";\nAcquire::https::proxy "http://proxy.iiit.ac.in:8080/";' > /etc/apt/apt.conf
+   vim /etc/resolv.conf
+   # add the name server as that of in your base machine
+   #+END_SRC
+   - You can put all this in a Dockerfile and then create a container
+   - In docker containers the nameserver is not setting by default. So we need
+     to set it manually
+** Dockerfile
+A Dockerfile is a text document that contains all the commands you would
+normally execute manually in order to build a Docker image. Docker can build
+images automatically by reading the instructions from a Dockerfile.
+    + Configuration file used to build docker images
+    + More effective and easier compared to =docker commit=
+ + Writing Dockerfile ::
+    + Docker file instructions
+       + =FROM=: for specifying the base image
+       + =RUN=: for specifying commands to execute
+     #+BEGIN_SRC command 
+     #Example of a Docker File
+     FROM ubuntu:14.04
+     RUN apt-get install -y  vim
+     RUN apt-get insatll -y curl
+     #+END_SRC
+
+     OR
+
+     #+BEGIN_SRC command
+     #Just another way of Docker File
+     FROM ubuntu:14.04
+     RUN apt-get update && apt-get install -y vim \
+                                         curl
+     #+END_SRC
+     - The second method of dockerfile is more preferable as in first case for each run
+       command an intermediate container gets created and destroyed where as in
+       second method only one intermediate container will get created and destroyed
+     - Thus Second method is more preferable.
+
+ + Building the Docker File ::
+    #+BEGIN_SRC command
+    docker build -t <repository:tag> <path>
+    #+END_SRC
+    - Now you can use this image "<repository>:<tag>" to create containers
+ + Some more info on Dockerfile ::
+    + CMD Instruction ::
+      - defines a default command that will execute when the container is
+        created/started whose base image is built using dockerfile
+      - will not perform any action when the image is being created
+      - can only be specified once in a dockerfile
+      - can be overriden at run time
+      For eg:
+      #+BEGIN_SRC command
+      FROM ubuntu:14.04
+      RUN apt-get update && apt-get install -y vim \
+                                         curl
+      CMD ping 127.0.0.1 -c 10                                       
+      #+END_SRC 
+   + ENTRYPOINT instruction ::
+     - Defines the command that will run when the container is executed
+     - Differnt from CMD instruction as ENTRYPOINT instruction will accept
+       arguments at run time
+     #+BEGIN_SRC command
+     ENTRYPOINT ["executable", "param1", "param2"]
+     #+END_SRC  
+     For eg:
+     #+BEGIN_SRC command
+     FROM ubuntu:14.04
+     RUN apt-get update && apt-get install -y vim \
+                                         curl
+     ENTRYPOINT ["ping"]                                      
+     #+END_SRC
+     - Only the last ENTRYPOINT instruction in the Dockerfile will have an effect. 
+     - The ENTRYPOINT instruction is given in exec form which will take
+       parameters in json format as it has to accept args at run time
+     - CMD instruction can also be given in exec format 
+     - For creating a container using the above Dockerfile:
+     #+BEGIN_SRC command
+     docker run <repository>:<tag> 127.0.0.1
+     #+END_SRC
+
+     + EXPOSE
+       The EXPOSE command is used to associate a specified port to enable networking
+       between the running process inside the container and the outside world
+       (i.e. the host).
+       Example:
+       #+BEGIN_SRC 
+       # Usage: EXPOSE [port]
+       EXPOSE 8080EXPOSE
+       #+END_SRC
+** Docker Data Volumes
+   + Data volumes are designed to persist data.
+   + These are independent of the container's life cycle i.e even though
+     containers are deleted volumes persist.
+   + Volumes are initialized when a container is created.
+   + Data volumes can be shared and reused among containers.
+   + Changes to a data volume will not be included when you update an image.
+*** Create Volume    
+   + To create anew volume
+     #+BEGIN_SRC command
+     docker volume create [OPTIONS]
+     #+END_SRC
+     -You can create a volume and then configure the container to use it, for example:
+     #+BEGIN_SRC command
+     docker volume create --name hello
+     docker run -d -v hello:/world <image> <command>
+     #+END_SRC
+     - Here the mount is created inside the container's /world directory. 
+*** Inspect
+   + To get information about one or more volumes
+     #+BEGIN_SRC command
+     docker volume inspect [OPTIONS] VOLUME [VOLUME...]
+     #+END_SRC
+     For example:
+     #+BEGIN_SRC command
+     docker volume create --name volume_1
+     #+END_SRC
+     #+BEGIN_SRC command
+     docker volume inspect volume_1
+     [
+       {
+          "Name": "volume_1",
+          "Driver": "local",
+          "Mountpoint": "/var/lib/docker/volumes/volume_1/_data",
+          "Labels": {}
+       }
+     ] 
+     #+END_SRC
+*** Delete Volume
+   + To delete one or more volumes
+     #+BEGIN_SRC command
+     docker volume rm [OPTIONS] VOLUME [VOLUME...]
+     #+END_SRC  
+     - You cannot remove a volume that is in use by a container. 
+*** List Volumes
+    + To list all the volumes present
+      #+BEGIN_SRC command
+      docker volume ls [OPTIONS]
+      #+END_SRC
+      #+BEGIN_SRC 
+      DRIVER              VOLUME NAME
+      local               volume_1
+      local               volume_2
+      #+END_SRC
 ** Few more basic operations
- + display docker images
+ + In the base machine all the files of Docker are stored in ::
+   #+BEGIN_SRC command
+   /var/lib/docker
+   #+END_SRC
+ + display docker images ::
    #+BEGIN_SRC command
    sudo docker images
    #+END_SRC
 
- + Naming the container 
+ + Naming the container ::
    - If you do not specify the name of the container docker will automatically
      assume any random name
    - To give name to a container:
@@ -338,29 +443,32 @@ CTRL+P+Q
      #+BEGIN_SRC command
      docker rename [OPTIONS] OLD_NAME NEW_NAME
      #+END_SRC
-
- + Container ID(long)
+ + Host name of the container ::
+     #+BEGIN_SRC command 
+     docker run -h <hostname> [options] [image] [command]
+     #+END_SRC
+ + Container ID(long) ::
    #+BEGIN_SRC command
    sudo docker inspect <container>
    #+END_SRC
 
- + Running in detached mode 
+ + Running in detached mode :: 
    #+BEGIN_SRC command
    docker run -d [image] [command]
    #+END_SRC
    - This will run the command in the background and will automatically shuts down
      the container after its execution
 
- + Run a command in a running container
+ + Run a command in a running container ::
    #+BEGIN_SRC command
    docker exec [OPTIONS] CONTAINER COMMAND [ARG...]
    #+END_SRC
 
- + Pause all processes within a container
+ + Pause all processes within a container ::
    #+BEGIN_SRC command
    docker pause CONTAINER [CONTAINER...]
    #+END_SRC
-
+ 
 * Docker Hub
 ** what is a Docker hub?
 The Docker Hub is a public registry maintained by Docker, Inc. It contains
@@ -442,3 +550,31 @@ cp hello.html index.html
     IP Address of the container
   - You should see the output of index.html
  
+* Backup
+** Backup Docker Images
+   + Save the Docker Image
+     #+BEGIN_SRC command
+     docker save -o <name_of_backup.tar> <image>
+     #+END_SRC
+     + This tar file will be stored in your current directory
+  
+   + Load the backup image
+     #+BEGIN_SRC command
+     docker load -i <name_of_backup.tar>
+     #+END_SRC
+     - If you run =docker images= you can see your image 
+** Backup Docker Containers
+   + Export docker containers
+     #+BEGIN_SRC command
+     docker export -o <backup_file_name.tar> <container ID> 
+     #+END_SRC
+     - Exports the contents of a container's filesystem as a tar archive
+     - The =docker export= command does not export the contents of volumes
+       associated with the container.
+   + Import docker containers
+     #+BEGIN_SRC command
+     docker import <backup_file_name.tar>
+     #+END_SRC
+     - This command will create a new image and then using that image you have
+       to create your container
+** Backup Data Volumes
