@@ -38,17 +38,26 @@
    + Simplified maintenance ::
      Docker reduces effort and risk of problems with application dependencies. 
 
+* Docker Architecture
+  + Docker uses a client-server architecture
+  + The Docker client talks to the Docker daemon, which does the heavy lifting
+    of building, running, and distributing your Docker containers
+    [[./images/architecture.png]]
 * Getting started with Docker
 ** Docker images and containers
-+ A Docker image is a read-only template. For example, an image could contain an
-  Ubuntu operating system with Apache and your web application installed. Images
-  are used to create Docker containers.Docker images are the build component of
-  Docker.
-+ A container is a runtime instance of a docker image.Each container is launched
-  from a Docker image. Docker containers can be run, started, stopped, moved, and
-  deleted.Docker containers are the run component of Docker.
-+ To use a programming metaphor, if an image is a class, then a
-  container is an instance of a class(a runtime object).
++ Docker Image ::
+  + A Docker image is a read-only template.
+  + For example, an image could contain an Ubuntu operating system with Apache
+    and your web application installed. 
+  + Images are used to create Docker containers.
+  + Docker images are the build component of Docker.
++ Docker Container ::
+  + A container is a runtime instance of a docker image.
+  + Each container is launched from a Docker image. 
+  + Docker containers can be run, started, stopped, moved, and deleted.
+  + Docker containers are the run component of Docker.
+  + To use a programming metaphor, if an image is a class, then acontainer is
+    an instance of a class(a runtime object).
 *** How does Docker images work?
    + Each image consists of a series of layers. 
    + Docker makes use of union file systems to combine these layers into a
@@ -945,6 +954,7 @@ You can refer [[https://docs.docker.com/docker-hub/][here]]
 * Reference
 + Docker Tutorials -  https://training.docker.com/self-paced-training
 + Benefits of Docker - https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/7/html/7.0_Release_Notes/sect-Red_Hat_Enterprise_Linux-7.0_Release_Notes-Linux_Containers_with_Docker_Format-Advantages_of_Using_Docker.html
++ Docker Architecture - https://docs.docker.com/v1.8/introduction/understanding-docker/
 + Docker glossary -  https://docs.docker.com/engine/reference/glossary/#union-file-system 
 + Docker Commands - https://docs.docker.com/engine/reference/commandline/
 + Docker file reference - https://docs.docker.com/engine/reference/builder/
