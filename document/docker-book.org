@@ -52,7 +52,7 @@
    + The Docker image is read-only. When Docker runs a container from an image, it
      adds a read-write layer on top of the image in which your application can then run.
 
-   [[/home/meghana/project/Docker-project/document/images/docker-layer.jpg]]
+   [[./images/docker-layer.jpg]]
    
 ** How to Install docker on Ubuntu 14.04
   Installation Instructions on Ubuntu:
@@ -832,10 +832,10 @@ You can refer [[https://docs.docker.com/docker-hub/][here]]
    done
    #+END_SRC
 + 6. Following graphs were obtained ::
-   [[/home/meghana/project/Docker-project/document/images/CPU-utilization-bar-graph.png]]
-   [[/home/meghana/project/Docker-project/document/images/CPU-utilizaton-line-graph.png]]
-   [[/home/meghana/project/Docker-project/document/images/memory-utilization-bar-graph.png]]
-   [[/home/meghana/project/Docker-project/document/images/memory-utilization-line-graph.png]] 
+   [[./images/CPU-utilization-bar-graph.png]]
+   [[./images/CPU-utilizaton-line-graph.png]]
+   [[./images/memory-utilization-bar-graph.png]]
+   [[./images/memory-utilization-line-graph.png]] 
 ** Test using siege and sar commands
 + Siege is an HTTP load testing and benchmarking utility that can be used to
   measure the performance of a web server when under duress. It evaluates the
@@ -887,9 +887,9 @@ You can refer [[https://docs.docker.com/docker-hub/][here]]
   graphs. You cav view the data [[/home/meghana/project/Docker-project/document/sar-test.org][here]]
   
   The following graphs were obtained:
-  [[/home/meghana/project/Docker-project/document/images/memory-usage-time-bar-graph.png]]
-  [[/home/meghana/project/Docker-project/document/images/memory-usage-time-line-graph.png]]
-  [[/home/meghana/project/Docker-project/document/images/memory-usage-container-status-bar-graph.png]]
+  [[./images/memory-usage-time-bar-graph.png]]
+  [[./images/memory-usage-time-line-graph.png]]
+  [[./images/memory-usage-container-status-bar-graph.png]]
 * Reference
 + Docker Tutorials -  https://training.docker.com/self-paced-training
 + Docker glossary -  https://docs.docker.com/engine/reference/glossary/#union-file-system 
