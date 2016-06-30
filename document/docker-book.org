@@ -11,6 +11,7 @@
   consistently deploy applications regardless of environment.
   You can refer it [[https://www.docker.com/what-docker#/copy1][here.]]
   
+* Motivation  
 * Benefits of Docker
   + Rapid application deployment ::
        Containers include the minimal runtime requirements of the application,
@@ -34,29 +35,30 @@
      Docker images are typically very small, which facilitates rapid delivery
      and reduces the time to deploy new application containers.
 
-   + Simplified maintenance ::
+  + Simplified maintenance ::
      Docker reduces effort and risk of problems with application dependencies. 
 
 * Docker Architecture
   + Docker uses a client-server architecture
   + The Docker client talks to the Docker daemon, which does the heavy lifting
     of building, running, and distributing your Docker containers
-    [[./images/architecture.png]]
+  
+      [[./images/architecture.png]]
 * Getting started with Docker
 ** Docker images and containers
-+ Docker Image ::
-  + A Docker image is a read-only template.
-  + For example, an image could contain an Ubuntu operating system with Apache
-    and your web application installed. 
-  + Images are used to create Docker containers.
-  + Docker images are the build component of Docker.
-+ Docker Container ::
-  + A container is a runtime instance of a docker image.
-  + Each container is launched from a Docker image. 
-  + Docker containers can be run, started, stopped, moved, and deleted.
-  + Docker containers are the run component of Docker.
-  + To use a programming metaphor, if an image is a class, then acontainer is
-    an instance of a class(a runtime object).
+ + Docker Image ::
+   + A Docker image is a read-only template.
+   + For example, an image could contain an Ubuntu operating system with Apache
+     and your web application installed. 
+   + Images are used to create Docker containers.
+   + Docker images are the build component of Docker.
+ + Docker Container ::
+   + A container is a runtime instance of a docker image.
+   + Each container is launched from a Docker image. 
+   + Docker containers can be run, started, stopped, moved, and deleted.
+   + Docker containers are the run component of Docker.
+   + To use a programming metaphor, if an image is a class, then acontainer is
+     an instance of a class(a runtime object).
 *** How does Docker images work?
    + Each image consists of a series of layers. 
    + Docker makes use of union file systems to combine these layers into a
@@ -83,35 +85,34 @@
   Installation Instructions on Ubuntu:
 + Update your droplet ::
   #+BEGIN_SRC command
-  sudo apt-get update
-  sudo apt-get -y upgrade
+  $ sudo apt-get update
+  $ sudo apt-get -y upgrade
   #+END_SRC
 + Make sure aufs support is available ::
   #+BEGIN_SRC command
-  sudo apt-get install linux-image-extra-`uname -r`
+  $ sudo apt-get install linux-image-extra-`uname -r`
   #+END_SRC
 + Add docker repository key to apt-key for package verification ::
   #+BEGIN_SRC command
-  sudo apt-key adv --keyserver hkp://pgp.mit.edu:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D
+  $ sudo apt-key adv --keyserver hkp://pgp.mit.edu:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D
   #+END_SRC
 + Add the docker repository to Apt sources ::
   #+BEGIN_SRC command
-  echo "deb https://apt.dockerproject.org/repo ubuntu-trusty main" | sudo tee /etc/apt/sources.list.d/docker.list
+  $ echo "deb https://apt.dockerproject.org/repo ubuntu-trusty main" | sudo tee /etc/apt/sources.list.d/docker.list
   #+END_SRC
 + Update the repository with the new addition ::
   #+BEGIN_SRC command
-  sudo apt-get update
+  $ sudo apt-get update
   #+END_SRC
 + Finally, download and install docker ::
   #+BEGIN_SRC command
-  sudo apt-get install docker-engine
+  $ sudo apt-get install docker-engine
   #+END_SRC
 + Check if docker is installed ::
- 
   #+BEGIN_SRC command
-  docker version
+  $ docker version
   #+END_SRC
-  If you get the following output, then it is successfully installed
+  If you get the following output, then Docker is successfully installed
   #+BEGIN_SRC command
   Client:
   Version:      1.11.2
@@ -121,110 +122,110 @@
   Built:        Wed Jun  1 21:47:50 2016
   OS/Arch:      linux/amd64
 
-Server:
- Version:      1.11.2
- API version:  1.23
- Go version:   go1.5.4
- Git commit:   b9f10c9
- Built:        Wed Jun  1 21:47:50 2016
- OS/Arch:      linux/amd64
-#+END_SRC
+  Server:
+  Version:      1.11.2
+  API version:  1.23
+  Go version:   go1.5.4
+  Git commit:   b9f10c9
+  Built:        Wed Jun  1 21:47:50 2016
+  OS/Arch:      linux/amd64
+  #+END_SRC
 
 ** Launch your first container 
-Launch or execute a command in container using =docker run= command. This
-command will launch a container from an image, execute your command 
-display output on terminal, stop container and  exit out.
+   Launch or execute a command in container using =docker run= command. This
+   command will launch a container from an image, execute your command 
+   display output on terminal, stop container and  exit out.
 
-#+BEGIN_SRC command
-docker run-->create container->run-container-->execute command-->show
-output-->exit from container-->stop container
-#+END_SRC
+   #+BEGIN_SRC command
+   docker run-->create container->run-container-->execute command-->show
+   output-->exit from container-->stop container
+   #+END_SRC
 
-#+BEGIN_SRC command
-$ sudo docker run [options] [image] [command] [args]
-#+END_SRC
-For Example:
-#+BEGIN_SRC command
-$ sudo docker run ubuntu:14.04 echo "Hello Docker"
-$ Hello Docker
-#+END_SRC
-If the ubuntu:14.04 image is not present locally it will download it, will
-create a container and then will execute the command =echo=. After this it
-will exit the container and the container is stopped.
+   #+BEGIN_SRC command
+   $ sudo docker run [options] [image] [command] [args]
+   #+END_SRC
+   For Example:
+   #+BEGIN_SRC command
+   $ sudo docker run ubuntu:14.04 echo "Hello Docker"
+   $ Hello Docker
+   #+END_SRC
+   If the ubuntu:14.04 image is not present locally it will download it, will
+   create a container and then will execute the command =echo=. After this it
+   will exit the container and the container is stopped.
 
-** Create/Start/Stop/Restart/Destroy your container 
-A container is a runtime instance of a docker image.
-+ Create a new container ::
-  #+BEGIN_SRC command
-  docker create [OPTIONS] IMAGE [COMMAND] [ARG...]
-  #+END_SRC
-  For example:
-  #+BEGIN_SRC command 
-  docker create -it ubuntu:14.04 echo "Hello World"
-  #+END_SRC 
-  + This command can be used to set up a container configuration ahead of time so
-  that it is ready to start when you need it.
-  + A container created does not start on it's own and is to be started.
-  + Creates a writeable container layer over the specified image.
+** Create/Start/Stop/Restart/Destroy your container  
+   A container is a runtime instance of a docker image.
+ + Create a new container ::
+   #+BEGIN_SRC command
+   $ docker create [OPTIONS] IMAGE [COMMAND] [ARG...]
+   #+END_SRC
+   For example:
+   #+BEGIN_SRC command 
+   $ docker create -it ubuntu:14.04 echo "Hello World"
+   #+END_SRC 
+   + =docker create= command can be used to set up a container configuration ahead of time so
+     that it is ready to start when you need it.
+   + Creates a writeable container layer over the specified image.   
+   + A container created does not start on it's own and is to be started.
+   
+ + Start a container ::
+   #+BEGIN_SRC command
+   $ docker start [OPTIONS] CONTAINER [CONTAINER...]
+   #+END_SRC
+   For Example:
+   #+BEGIN_SRC command
+   $ docker start e76ccff0a41a
+   e76ccff0a41a
+   #+END_SRC
+ + To stop one or more containers ::
+   #+BEGIN_SRC command
+   $ docker stop [OPTIONS] CONTAINER [CONTAINER...]
+   #+END_SRC
+   For Example:
+   #+BEGIN_SRC command
+   $ docker stop e76ccff0a41a
+   e76ccff0a41a
+   #+END_SRC
 
-+ Start a container ::
-  #+BEGIN_SRC command
-  docker start [OPTIONS] CONTAINER [CONTAINER...]
-  #+END_SRC
-  For Example:
-  #+BEGIN_SRC command
-  $ docker start e76ccff0a41a
-  e76ccff0a41a
-  #+END_SRC
-+ To stop one or more containers ::
-  #+BEGIN_SRC command
-  docker stop [OPTIONS] CONTAINER [CONTAINER...]
-  #+END_SRC
-  For Example:
-  #+BEGIN_SRC command
-  $ docker stop e76ccff0a41a
-  e76ccff0a41a
-  #+END_SRC
++  To restart one or more container ::
+   #+BEGIN_SRC command
+   $ docker restart [OPTIONS] CONTAINER [CONTAINER...]
+   #+END_SRC
+   For Example:
+   #+BEGIN_SRC command
+   $ docker restart e76ccff0a41a
+   e76ccff0a41a
+   #+END_SRC
 
-+ To restart one or more container ::
-  #+BEGIN_SRC command
-  docker restart [OPTIONS] CONTAINER [CONTAINER...]
-  #+END_SRC
-  For Example:
-  #+BEGIN_SRC command
-  $ docker restart e76ccff0a41a
-  e76ccff0a41a
-  #+END_SRC
-
-+ Destroy a container ::
-  #+BEGIN_SRC command
-  docker rm [OPTIONS] CONTAINER [CONTAINER...]
-  #+END_SRC
-  - You can destroy one or more containers at a time
-  - You cannot delete a container which is currently running. So first stop the
-    container and then delete it.
-  #+BEGIN_SRC command
-  $ docker stop e76ccff0a41a
-  e76ccff0a41a
-  $ docker rm e76ccff0a41a
-  e76ccff0a41a
-  #+END_SRC
+ + Destroy a container ::
+   #+BEGIN_SRC command
+   $ docker rm [OPTIONS] CONTAINER [CONTAINER...]
+   #+END_SRC
+   + You can destroy one or more containers at a time
+   + You cannot delete a container which is currently running. So first stop the
+     container and then delete it.
+   #+BEGIN_SRC command
+   $ docker stop e76ccff0a41a
+   e76ccff0a41a
+   $ docker rm e76ccff0a41a
+   e76ccff0a41a
+   #+END_SRC
 
 ** Naming a container
    + If you do not specify the name of the container docker will automatically
      assume any random name.
    + To give name to a container:
      #+BEGIN_SRC command
-     docker run [options] -name <name of container> <image> <command>  
+     $ docker run [options] -name <name of container> <image> <command>  
      #+END_SRC
      For Example:
      #+BEGIN_SRC command
      $ docker run -it -name lab1_cse01 ubuntu:14.04 bash
-     root@8c2fc6ba883b:~#_  
+     root@8c2fc6ba883b:~#  
      #+END_SRC
    + You can always rename your container
      #+BEGIN_SRC command
-     docker rename [OPTIONS] OLD_NAME NEW_NAME
+     $ docker rename [OPTIONS] OLD_NAME NEW_NAME
      #+END_SRC
      For Example:
      #+BEGIN_SRC command
@@ -233,58 +234,57 @@ A container is a runtime instance of a docker image.
 
 ** Giving a hostname to container
  + To give host name to container you must use =-h= flag with the =docker run= command:
-     #+BEGIN_SRC command 
-     docker run -h <hostname> [options] [image] [command]
-     #+END_SRC
-     For Example:
-     #+BEGIN_SRC command
-     $ docker run -h new_ctnd -it ubuntu:14.04 bash
-     root@new_cntd:~#_
-     #+END_SRC
-** List container
-=docker ps= command is used to list containers in host machine. Depending on
-the flags provided, it displays information of stopped or running containers.  
-#+BEGIN_SRC command
-docker ps [options]
-#+END_SRC
+   #+BEGIN_SRC command 
+   $ docker run -h <hostname> [options] [image] [command]
+   #+END_SRC
+   For Example:
+   #+BEGIN_SRC command
+   $ docker run -h new_ctnd -it ubuntu:14.04 bash
+   root@new_cntd:~#
+   #+END_SRC
+** List containers
+   =docker ps= command is used to list containers in host machine. Depending on
+   the flags provided, it displays information of stopped or running containers.  
+   #+BEGIN_SRC command
+   $ docker ps [options]
+   #+END_SRC
 
-+ List the containers which are currently running ::
-    #+BEGIN_SRC command 
-    $ docker ps
-    CONTAINER ID    IMAGE          COMMAND    CREATED              STATUS              PORTS           NAMES
-    07c5614d5a40    ubuntu:14.04   "bash"     About a minute ago   Up About a minute                   evil_fermi
-    e76ccff0a41a    ubuntu:14.04   "bash"     4 days ago           Up 12 minutes                       stoic_bhabha
-    #+END_SRC
+ + List the containers which are currently running ::
+   #+BEGIN_SRC command 
+   $ docker ps
+   CONTAINER ID    IMAGE          COMMAND    CREATED              STATUS              PORTS           NAMES
+   07c5614d5a40    ubuntu:14.04   "bash"     About a minute ago   Up About a minute                   evil_fermi
+   e76ccff0a41a    ubuntu:14.04   "bash"     4 days ago           Up 12 minutes                       stoic_bhabha
+   #+END_SRC
  
-+ List all the containers(both running and stopped) ::
-    #+BEGIN_SRC command
-    $ docker ps -a
-    CONTAINER ID        IMAGE                    COMMAND             CREATED             STATUS                    PORTS               NAMES
-    07c5614d5a40        ubuntu:14.04             "bash"              5 minutes ago       Up 5 minutes                                  evil_fermi
-    e76ccff0a41a        ubuntu:14.04             "bash"              4 days ago          Up 15 minutes                                 stoic_bhabha
-    ca251b8c44d8        ubuntu:14.04             "bash"              4 days ago          Exited (0) 4 days ago                         sad_wright
-    58d28030aa5e        ubuntu:14.04             "bash"              4 days ago          Exited (0) 4 days ago                         jolly_raman
-    34ab6efd089f        lab/problem-solving:01   "bash"              5 days ago          Exited (0) 4 days ago                         insane_yalow
-    4164528c53c3        ubuntu:14.04             "bash"              5 days ago          Exited (0) 4 days ago                         pensive_hypatia
-    ec164228902a        ubuntu:14.04             "bash"              5 days ago          Exited (0) 21 hours ago                       tiny_aryabhata
-    8c2fc6ba883b        ubuntu:14.04             "bash"              5 days ago          Exited (0) 30 hours ago                       new-name
-    #+END_SRC
+ + List all the containers(both running and stopped) ::
+   #+BEGIN_SRC command
+   $ docker ps -a
+   CONTAINER ID        IMAGE                    COMMAND             CREATED             STATUS                    PORTS               NAMES
+   07c5614d5a40        ubuntu:14.04             "bash"              5 minutes ago       Up 5 minutes                                  evil_fermi
+   e76ccff0a41a        ubuntu:14.04             "bash"              4 days ago          Up 15 minutes                                 stoic_bhabha
+   ca251b8c44d8        ubuntu:14.04             "bash"              4 days ago          Exited (0) 4 days ago                         sad_wright
+   58d28030aa5e        ubuntu:14.04             "bash"              4 days ago          Exited (0) 4 days ago                         jolly_raman
+   34ab6efd089f        lab/problem-solving:01   "bash"              5 days ago          Exited (0) 4 days ago                         insane_yalow
+   4164528c53c3        ubuntu:14.04             "bash"              5 days ago          Exited (0) 4 days ago                         pensive_hypatia
+   ec164228902a        ubuntu:14.04             "bash"              5 days ago          Exited (0) 21 hours ago                       tiny_aryabhata
+   8c2fc6ba883b        ubuntu:14.04             "bash"              5 days ago          Exited (0) 30 hours ago                       new-name
+   #+END_SRC
     OR
-    #+BEGIN_SRC command
-    $ docker ps -as
-    CONTAINER ID        IMAGE                    COMMAND             CREATED             STATUS                    PORTS               NAMES               SIZE
-    07c5614d5a40        ubuntu:14.04             "bash"              6 minutes ago       Up 6 minutes                                  evil_fermi          0 B (virtual 188 MB)
-    e76ccff0a41a        ubuntu:14.04             "bash"              4 days ago          Up 17 minutes                                 stoic_bhabha        164 B (virtual 188 MB)
-    ca251b8c44d8        ubuntu:14.04             "bash"              4 days ago          Exited (0) 4 days ago                         sad_wright          203.8 kB (virtual 188.2 MB)
-    58d28030aa5e        ubuntu:14.04             "bash"              4 days ago          Exited (0) 4 days ago                         jolly_raman         63.87 MB (virtual 251.8 MB)
-    34ab6efd089f        lab/problem-solving:01   "bash"              5 days ago          Exited (0) 4 days ago                         insane_yalow        1.385 MB (virtual 788.7 MB)
-    4164528c53c3        ubuntu:14.04             "bash"              5 days ago          Exited (0) 4 days ago                         pensive_hypatia     153.1 MB (virtual 341.1 MB)
-    ec164228902a        ubuntu:14.04             "bash"              5 days ago          Exited (0) 21 hours ago                       tiny_aryabhata      1.25 GB (virtual 1.438 GB)
-    8c2fc6ba883b        ubuntu:14.04             "bash"              5 days ago          Exited (0) 30 hours ago                       new-name            0 B (virtual 188 MB)
-    #+END_SRC
-    + flag =a= for all containers
-    + flag =s= for size of containers
-
+   #+BEGIN_SRC command
+   $ docker ps -as
+   CONTAINER ID        IMAGE                    COMMAND             CREATED             STATUS                    PORTS               NAMES               SIZE
+   07c5614d5a40        ubuntu:14.04             "bash"              6 minutes ago       Up 6 minutes                                  evil_fermi          0 B (virtual 188 MB)
+   e76ccff0a41a        ubuntu:14.04             "bash"              4 days ago          Up 17 minutes                                 stoic_bhabha        164 B (virtual 188 MB)
+   ca251b8c44d8        ubuntu:14.04             "bash"              4 days ago          Exited (0) 4 days ago                         sad_wright          203.8 kB (virtual 188.2 MB)
+   58d28030aa5e        ubuntu:14.04             "bash"              4 days ago          Exited (0) 4 days ago                         jolly_raman         63.87 MB (virtual 251.8 MB)
+   34ab6efd089f        lab/problem-solving:01   "bash"              5 days ago          Exited (0) 4 days ago                         insane_yalow        1.385 MB (virtual 788.7 MB)
+   4164528c53c3        ubuntu:14.04             "bash"              5 days ago          Exited (0) 4 days ago                         pensive_hypatia     153.1 MB (virtual 341.1 MB)
+   ec164228902a        ubuntu:14.04             "bash"              5 days ago          Exited (0) 21 hours ago                       tiny_aryabhata      1.25 GB (virtual 1.438 GB)
+   8c2fc6ba883b        ubuntu:14.04             "bash"              5 days ago          Exited (0) 30 hours ago                       new-name            0 B (virtual 188 MB)
+   #+END_SRC
+   + flag =a= to view all containers
+   + flag =s= to view size of containers
 ** List images
    List all the images currently sitting in your local repository/system
    #+BEGIN_SRC command
@@ -299,7 +299,7 @@ docker ps [options]
    ubuntu                14.04               8f1bd21bd25c        4 weeks ago         188 MB
 #+END_SRC
 ** List processes running inside a container 
-+ Display the running processes of a container ::
+ + Display the running processes of a container ::
    #+BEGIN_SRC command
    $ docker top [container]
    #+END_SRC
@@ -311,26 +311,28 @@ docker ps [options]
    #+END_SRC
    
 ** Running your container in detached mode
-   #+BEGIN_SRC command
-   docker run -d [image] [command]
-   #+END_SRC
-   + This will run the command in the background and will automatically shuts down
-     the container after its execution
-
-   For Example:
-   #+BEGIN_SRC command
-   $ docker run -d ubuntu:14.04 bash
-   698de53f5f4b151122e18b51d4abb813b4e1dff10e30472791dd5ec336fb4b10
-   $
-   #+END_SRC
+   + To run a container in the background as soon as it is created you have to
+     specify =-d= flag along with the =docker run= command
+     #+BEGIN_SRC command
+     $ docker run -d [image] [command]
+     #+END_SRC
+     + This will run the command in the background and will automatically shuts down
+       the container after its execution
+     For Example:
+     #+BEGIN_SRC command
+     $ docker run -d ubuntu:14.04 bash
+     698de53f5f4b151122e18b51d4abb813b4e1dff10e30472791dd5ec336fb4b10
+     $
+     #+END_SRC
+ 
 ** Execute a command inside a container from host machine 
-   + You can execute a command inside a container from the host machine
-     provided the container is in running state. Othrewise you have to start
-     the container first and then use the following command
+ + You can execute a command inside a container from the host machine
+   provided the container is in running state. Otherwise you have to start
+   the container first and then use the following command
    #+BEGIN_SRC command
-   docker exec [OPTIONS] CONTAINER COMMAND [ARG...]
+   $ docker exec [OPTIONS] CONTAINER COMMAND [ARG...]
    #+END_SRC
-   FOr example:
+   For example:
    #+BEGIN_SRC command
    root@meghana / $ docker ps
    CONTAINER ID   IMAGE          COMMAND      CREATED        STATUS              PORTS               NAMES
@@ -351,74 +353,75 @@ docker ps [options]
 
    + You can use various flags with this command
    #+BEGIN_SRC command
-     -d, --detach               Detached mode: run command in the background
-     -i, --interactive          Keep STDIN open even if not attached
-     -t                         Allocate a pseudo Terminal
+     -d                Detached mode: run command in the background
+     -i                Keep STDIN open even if not attached
+     -t                Allocate a pseudo Terminal
    #+END_SRC
 ** Get inside a container 
-To get terminal access to container you need to fire some commands. This may be
-required to install packages and configure them inside your container.
-+ Case 1 :: 
-  If you want to enter into a container as soon as you create it:
-  #+BEGIN_SRC command
-  docker run -it <repository>:<tag> bash
-  #+END_SRC
-  + -i flag to connect STDIN on the container
-  + -t flag to get a pseudo terminal
-  +For Example:
-  #+BEGIN_SRC command
-  $ docker run -it ubuntua:14.04 bash
-  root@ec164228902a:~#
-  #+END_SRC
+   To get terminal access to container you need to fire some commands. This may be
+   required to install packages and configure them inside your container.
+ + Case 1 :: 
+   If you want to enter into a container as soon as you create it:
+   #+BEGIN_SRC command
+   $ docker run -it <repository>:<tag> bash
+   #+END_SRC
+   + =-i= flag to connect STDIN on the container
+   + =-t= flag to get a pseudo terminal
+   For Example:
+   #+BEGIN_SRC command
+   $ docker run -it ubuntua:14.04 bash
+   root@ec164228902a:~#
+   #+END_SRC
 
-+ Case 2 :: 
-  If you fire =bash= command inside a container, it runs forever, until
-  manually stopped. By giving -d flag to =docker run=  a container executes
-  and runs in detached mode, with no interaction with user. So to get inside a
-  container which is running in detached mode:
-  + Method 1 :: 
-    Using exec command
-    #+BEGIN_SRC comand
-    docker exec -it <Container ID> bash
-    #+END_SRC
-    For Example:
-    #+BEGIN_SRC command
-    $ docker exec -it ec164228902a bash
-    root@ec164228902a:~#
-    #+END_SRC
-    + To come out of the container without stopping it ::
-    #+BEGIN_SRC command 
-    CTRL+P+Q
-    #+END_SRC
-      OR
-    #+BEGIN_SRC command
-    exit
-    #+END_SRC
-    #+BEGIN_SRC command
-    root@ec164228902a:~# exit
-    root@meghana ~ $
-    root@meghana ~ $ docker ps
-    CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
-    07c5614d5a40        ubuntu:14.04        "bash"              21 minutes ago      Up 21 minutes                           evil_fermi
-    ec164228902a        ubuntu:14.04        "bash"              4 days ago          Up 32 minutes                           stoic_bhabha
-    #+END_SRC
+ + Case 2 :: 
+   If you fire =bash= command inside a container, it runs forever, until
+   manually stopped. By giving =-d= flag to =docker run=  a container executes
+   and runs in detached mode, with no interaction with user. So to get inside a
+   container which is running in detached mode:
+   + Method 1 :: 
+     + Using exec command
+     #+BEGIN_SRC comand
+     $ docker exec -it <Container ID> bash
+     #+END_SRC
+     For Example:
+     #+BEGIN_SRC command
+     $ docker exec -it ec164228902a bash
+     root@ec164228902a:~#
+     #+END_SRC
+     + To come out of the container without stopping it ::
+     #+BEGIN_SRC command 
+     CTRL+P CTRL+Q
+     #+END_SRC
+       OR
+     #+BEGIN_SRC command
+     # exit
+     #+END_SRC
+     For example you are inside the container =ec164228902a=:
+     #+BEGIN_SRC command
+     root@ec164228902a:~# exit
+     root@meghana ~ $
+     root@meghana ~ $ docker ps
+     CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+     07c5614d5a40        ubuntu:14.04        "bash"              21 minutes ago      Up 21 minutes                           evil_fermi
+     ec164228902a        ubuntu:14.04        "bash"              4 days ago          Up 32 minutes                           stoic_bhabha
+     #+END_SRC
 
-  + Method 2 :: 
-    Using Attach command
-    #+BEGIN_SRC command
-    docker attach <Container ID>
-    #+END_SRC
-    + You might need to hit Enter to bring up the prompt.
-    For Example:
-    #+BEGIN_SRC command
-    $ docker attach ec164228902
-    $
-    root@ec164228902:~#
-    #+END_SRC
-    + To get out of the container without stopping it ::
-    #+BEGIN_SRC command
-    CTRL+P+Q
-    #+END_SRC
+   + Method 2 :: 
+     + Using Attach command
+     #+BEGIN_SRC command
+     $ docker attach <Container ID>
+     #+END_SRC
+     + You might need to hit Enter to bring up the prompt.
+     For Example:
+     #+BEGIN_SRC command
+     $ docker attach ec164228902
+     $
+     root@ec164228902:~#
+     #+END_SRC
+     + To come out of the container without stopping it ::
+     #+BEGIN_SRC command
+     CTRL+P+Q
+     #+END_SRC
  
 ** Auto restart Containers 
    If your host machine shuts down, all container will be stopped. Once your
@@ -426,7 +429,7 @@ required to install packages and configure them inside your container.
    behavior to all your containers, you need to add a flag =--restart= in
    =docker run= command. 
    #+BEGIN_SRC command
-   docker run [options] --restart=always [image] [command]
+   $ docker run [options] --restart=always [image] [command]
    #+END_SRC
    For Example:
    #+BEGIN_SRC command
@@ -435,178 +438,188 @@ required to install packages and configure them inside your container.
    + We need to specify whether you want to auto-start your container at the
      time of its creation itself.
 
-** Some Important flags with =docker run= command
-  + =-i=  connect STDIN on the container
-  + =-t=  Give pseudo Terminal to the container
-  + =-d=  Run the container in detached mode
-  + =-p=  To specify ports or range of ports
-  + =-c=  Limit CPU shares  
-  + =-m=  Memory limit 
-  #+BEGIN_SRC command
-  $ docker run -i -t -d -p 80:80 -c 10 -m 300M ubuntu:14.04 bash
-  #+END_SRC
+** Resource allocation options for Docker containers
+   + Using the =-m= flag with =docker run= command we can limit the memory(RAM)
+     usage of the containers
+     #+BEGIN_SRC command
+     $ docker run -m [] [options] [image] [command]
+     #+END_SRC
+     For Example:
+     #+BEGIN_SRC command
+     $ docker run -d -it -m 300M ubuntu:14.04 bash
+     WARNING: Your kernel does not support swap limit capabilities, memory limited without swap.
+     b172827cb899f36e35e0fa587e6f30793f0ed37befe76a1e77b2f9cacc8c905a
+     $  docker stats --no-stream=true
+     CONTAINER           CPU %               MEM USAGE / LIMIT       MEM %               NET I/O             BLOCK I/O           PIDS
+     b172827cb899        0.00%               712.7 kB / =314.6 MB=   0.23%               4.064 kB / 648 B    114.7 kB / 0 B      0
+     ec164228902a        0.00%               4.375 MB / 4.064 GB     0.11%               12.37 kB / 648 B    4.071 MB / 0 B      0
+     #+END_SRC
+     + Thus here we are able to limit the RAM to 300MB
+     + While for the other container it is 4GB as we didn't mention anything during
+       its creation, so it takes 4GB(host system RAM) by default.
+     + Here the =-d= flag lets the container run in detached mode
 * Advanced operations in Docker
 ** Create an image from your container 
-  One can commit a container and can create its image. Thus we can save the state
-  a container. This image can be used to launch new container with all the
-  packages installed hence replicating the state of the container. This helps
-  in creating a reusable image for launching multiple containers with
-  customized applications of your need. 
+   One can commit a container and can create its image. Thus we can save the state
+   a container. This image can be used to launch new container with all the
+   packages installed hence replicating the state of the container. This helps
+   in creating a reusable image for launching multiple containers with
+   customized applications of your need. 
 
-  #+BEGIN_SRC command
-  docker commit <container ID> <Repository>:<tag>
-  #For Example:
-  $ docker commit ec164228902 meghanab/myapp:1.0
-  sha256:4069d3511b08f810c6b725f64360f10148a46a8e5f66a111304585e33af1e912
-  #+END_SRC
+   #+BEGIN_SRC command
+   $ docker commit <container ID> <Repository>:<tag>
+   #For Example:
+   $ docker commit ec164228902 meghanab/myapp:1.0
+   sha256:4069d3511b08f810c6b725f64360f10148a46a8e5f66a111304585e33af1e912
+   #+END_SRC
    
 ** Dockerfile
-A Dockerfile is a text document that contains all the commands you would
-normally execute manually in order to build a Docker image. Docker can build
-images automatically by reading the instructions from a Dockerfile.
-    + Thus we can say that Dockerfike is a configuration file used to build docker images
-    + It is more effective and easier way compared to =docker commit=
+   A Dockerfile is a text document that contains all the commands you would
+   normally execute manually in order to build a Docker image. Docker can build
+   images automatically by reading the instructions from a Dockerfile.
+   + Thus we can say that Dockerfike is a configuration file used to build docker images
+   + It is more effective and easier way compared to =docker commit=
  + Writing Dockerfile ::
-      + Docker file instructions
-        + =FROM=: for specifying the base image
-        + =RUN=: for specifying commands to execute
-        #+BEGIN_SRC command
-        $ vim Dockerfile 
-        #Example of a Docker File
-        FROM ubuntu:14.04
-        RUN apt-get install -y  vim
-        RUN apt-get insatll -y curl
-        #+END_SRC
+   + Docker file instructions:
+   + =FROM=: for specifying the base image
+   + =RUN=: for specifying commands to execute
+   #+BEGIN_SRC command
+   $ vim Dockerfile 
+   #Example of a Docker File
+   FROM ubuntu:14.04
+   RUN apt-get install -y  vim
+   RUN apt-get insatll -y curl
+   #+END_SRC
 
         OR
 
-        #+BEGIN_SRC command
-        #Just another way of Docker File
-        $ vim Dockefile
-        FROM ubuntu:14.04
-        RUN apt-get update && apt-get install -y vim \
+   #+BEGIN_SRC command
+   #Just another way of Docker File
+   $ vim Dockefile
+   FROM ubuntu:14.04
+   RUN apt-get update && apt-get install -y vim \
                                             curl
-        #+END_SRC
-      + The second method of dockerfile is more preferable as in first case for each run
-        command an intermediate container gets created and destroyed where as in
-        second method only one intermediate container will get created and destroyed
-        - Thus Second method is more preferable.      
+   #+END_SRC
+   + The second method of dockerfile is more preferable as in first case for each run
+     command an intermediate container gets created and destroyed where as in
+     second method only one intermediate container will get created and destroyed
+   + Thus Second method is more preferable.      
  + Building a image from our Docker File :: 
-     #+BEGIN_SRC command
-     docker build -t [repository]:[tag] [path]
-     #+END_SRC
-     + Now you can use this image =[repository]:[tag]= to create containers
-     For Example:
-     #+BEGIN_SRC command
-     docker build -t meghanab/new_app:1.0 .
-     #+END_SRC
-      + =-t= for specifying the image tag
-      + =.= to specify the path of Dockerfile. In this case it is in the current directory
+   #+BEGIN_SRC command
+   $ docker build -t [repository]:[tag] [path]
+   #+END_SRC
+   + Now you can use this image =[repository]:[tag]= to create containers
+   For Example:
+   #+BEGIN_SRC command
+   $ docker build -t meghanab/new_app:1.0 .
+   #+END_SRC
+   + =-t= for specifying the image tag
+   + =.= to specify the path of Dockerfile. In this case it is the current directory
  + Launching a container from our new image ::
-    #+BEGIN_SRC command
-    docker run [options] [repository]:[tag] [command]
-    #+END_SRC
-    For Example:
-    #+BEGIN_SRC command
-    $ docker run -it -d meghanab/new_app:1.0 bash
-    root@e76ccff0a41a:~#
-    #+END_SRC
-    + Thus a new container will be created and started with vim and curl pre
-      installed. Similarly we can install other packages.
+   #+BEGIN_SRC command
+   $ docker run [options] [repository]:[tag] [command]
+   #+END_SRC
+   For Example:
+   #+BEGIN_SRC command
+   $ docker run -it -d meghanab/new_app:1.0 bash
+   root@e76ccff0a41a:~#
+   #+END_SRC
+   + Thus a new container will be created and started with vim and curl
+     pre-installed. Similarly we can install other packages.
+
 *** Some more info on Dockerfile
-    + CMD Instruction ::
-      - defines a default command that will execute when the container is
-        created/started whose base image is built using dockerfile
-      - will not perform any action when the image is being created
-      - can only be specified once in a dockerfile
-      - can be overriden at run time
-      For eg:
+  + CMD Instruction ::
+    + Defines a default command that will execute when the container is
+      created/started whose base image is built using dockerfile
+    + Will not perform any action when the image is being created
+    + Can only be specified once in a dockerfile
+    + Can be overriden at run time
+      For Example:
       #+BEGIN_SRC command
       FROM ubuntu:14.04
       RUN apt-get update && apt-get install -y vim \
                                          curl
       CMD ping 127.0.0.1 -c 10                                       
       #+END_SRC 
-    + ENTRYPOINT instruction ::
-     - Defines the command that will run when the container is executed
-     - Differnt from =CMD= instruction as =ENTRYPOINT= instruction will accept
-       arguments at run time
-     #+BEGIN_SRC command
-     ENTRYPOINT ["executable", "param1", "param2"]
-     #+END_SRC  
-     For eg:
-     #+BEGIN_SRC command
-     FROM ubuntu:14.04
-     RUN apt-get update && apt-get install -y vim \
+  + ENTRYPOINT instruction ::
+    + Defines the command that will run when the container is executed
+    + Differnt from =CMD= instruction as =ENTRYPOINT= instruction will accept
+      arguments at run time
+      #+BEGIN_SRC command
+      ENTRYPOINT ["executable", "param1", "param2"]
+      #+END_SRC  
+      For Example:
+      #+BEGIN_SRC command
+      FROM ubuntu:14.04
+      RUN apt-get update && apt-get install -y vim \
                                          curl
-     ENTRYPOINT ["ping"]                                      
-     #+END_SRC
-     - Only the last =ENTRYPOINT= instruction in the Dockerfile will have an effect. 
-     - The =ENTRYPOINT= instruction is given in exec form which will take
+      ENTRYPOINT ["ping"]                                      
+      #+END_SRC
+    + Only the last =ENTRYPOINT= instruction in the Dockerfile will have an effect. 
+    + The =ENTRYPOINT= instruction is given in exec form which will take
        parameters in json format as it has to accept args at run time
-     - =CMD= instruction can also be given in exec format 
-     - You can give only one command in the =ENTRYPOINT= instruction
-     #+BEGIN_SRC command
-     docker run <repository>:<tag> 127.0.0.1
-     #+END_SRC
+    + =CMD= instruction can also be given in exec format 
+    + You can give only one command in the =ENTRYPOINT= instruction
+      #+BEGIN_SRC command
+      $ docker run <repository>:<tag> 127.0.0.1
+      #+END_SRC
 
-    + EXPOSE
-       The =EXPOSE= command is used to associate a specified port to enable networking
-       between the running process inside the container and the outside world
-       (i.e. the host).
-       Example:
-       #+BEGIN_SRC command 
-       # Usage: EXPOSE [port]
-       EXPOSE 8080EXPOSE
-       #+END_SRC
-    + ADD
-       The =ADD= instruction copies new files, directories or remote file URLs
-       from <src> and adds them to the filesystem of the container at the path
-       <dest>.
-       #+BEGIN_SRC command
-       $ ADD <src>... <dest>
-       OR   
-       $ ADD ["<src>",... "<dest>"] (this form is required for paths containing whitespace)
-       #+END_SRC
+  + EXPOSE instruction ::
+    The =EXPOSE= command is used to associate a specified port to enable networking
+    between the running process inside the container and the outside world
+    (i.e. the host).
+    For Example:
+    #+BEGIN_SRC command 
+    # Usage: EXPOSE [port]
+    EXPOSE 8080EXPOSE
+    #+END_SRC
+  + ADD instruction ::
+    The =ADD= instruction copies new files, directories or remote file URLs
+    from <src> and adds them to the filesystem of the container at the path
+    <dest>.
+    #+BEGIN_SRC command
+    $ ADD <src>... <dest>
+          OR   
+    $ ADD ["<src>",... "<dest>"] (this form is required for paths containing whitespace)
+    #+END_SRC
 
 ** Run a container as a server 
-+ We can run a container as long as you don't kill the process with PID 1
-+ If a process with PID 1 is killed inside a container then the container will
-  automatically stop.
-+ In the =docker run [options] [image] [command]=, the command which you give
-  will become the process with PID 1
-+ If we give "bash" as command then the container will not stop until we
-  manually kill bash process in that container.
+  + We can run a container as long as you don't kill the process with PID 1
+  + If a process with PID 1 is killed inside a container then the container will
+    automatically stop.
+  + In the =docker run [options] [image] [command]=, the command which you give
+    will become the process with PID 1
+  + If we give "bash" as command then the container will not stop until we
+    manually kill bash process in that container.
 *** Steps to set up a container as a server 
-+ Create and run a container ::
-  #+BEGIN_SRC command
-  docker run [options] [image] [command]
-  #+END_SRC
-  - So let us give bash command 
-  #+BEGIN_SRC command
-  docker run -i -t ubuntu:14.04 bash
-  #+END_SRC
-  + This command will create a new container and will take us inside the
-  container
-  + Now if you fire =ps -ax= you can see the bash process with PID 1
-  #+BEGIN_SRC command 
-  PID TTY      STAT   TIME COMMAND
-    1 ?        Ss+    0:00 bash
-   51 ?        R+     0:00 ps -ax
-  #+END_SRC
-  + So now if you fire =exit= you will kill the process bash and you will come out of the container and the
-    container stops, which is not desired.
-  + If you want to come out of the container and keep it running in background,
-    then fire:
+  + Create and run a container ::
+    #+BEGIN_SRC command
+    $ docker run [options] [image] [command]
+    #+END_SRC
+    + So let us give bash command 
+    #+BEGIN_SRC command
+    $ docker run -i -t ubuntu:14.04 bash
+    #+END_SRC
+    + This command will create a new container and will take us inside the
+      container
+    + Now if you fire =ps -ax= you can see the bash process with PID 1
+    #+BEGIN_SRC command 
+    PID TTY      STAT   TIME COMMAND
+      1 ?        Ss+    0:00 bash
+     51 ?        R+     0:00 ps -ax
+    #+END_SRC
+    + So now if you fire =exit= you will kill the process bash and you will come out of the container and the
+      container stops, which is not desired.
+  + If you want to come out of the container and keep it running in background,then fire ::
     #+BEGIN_SRC command
     CTRL+P+Q
     #+END_SRC
   + If the host system is rebooted then this container is stopped. So to avoid
-    this we have to give =--restart=always= flag at the time of creating container. It is
-    explained in the following section.
+    this we have to give =--restart=always= flag at the time of creating
+    container. This is discussed above in the 'Auto restart containers' section.
 ** To view the Docker containers resource usage statistics
    #+BEGIN_SRC command
-   docker stats --no-stream=true  
+   $ docker stats --no-stream=true  
    #+END_SRC
    For Example:
    #+BEGIN_SRC command
@@ -624,137 +637,153 @@ images automatically by reading the instructions from a Dockerfile.
    + Changes to a data volume will not be included when you update an image.
    [[./images/volumes.png]]
 *** Create Volume
-   + To create anew volume
-     #+BEGIN_SRC command
-     docker volume create [OPTIONS]
-     #+END_SRC
-     -You can create a volume and then configure the container to use it, for example:
-     #+BEGIN_SRC command
-     docker volume create --name hello
-     docker run -d -v hello:/world <image> <command>
-     #+END_SRC
-     - Here the mount is created inside the container's /world directory. 
+  + To create a new volume
+    #+BEGIN_SRC command
+    $ docker volume create [OPTIONS]
+    #+END_SRC
+    + You can create a volume and then configure the container to use it.
+    For Example:
+    #+BEGIN_SRC command
+    $ docker volume create --name hello
+    $ docker run -d -v hello:/world <image> <command>
+    #+END_SRC
+    + Here the mount is created inside the container's /world directory. 
 *** Mount Host Directory
     To mount a directory from host to your container
     #+BEGIN_SRC command
-    docker run [options] -v /<host_dir>:/<container_dir> [image] [command]
+    $ docker run [options] -v /<host_dir>:/<container_dir> [image] [command]
     #+END_SRC
     For Example:
     #+BEGIN_SRC command
-    docker run -it -v /home/meghana/project:/test ubuntu:14.04 bash
+    $ docker run -it -v /home/meghana/project:/test ubuntu:14.04 bash
     #+END_SRC
     + This command mounts the host directory, /home/meghana/project, into the
       container at /test
     + All the files in /home/meghana/project can accessed from /test inside the
       container
 *** Inspect
-   + To get information about one or more volumes
-     #+BEGIN_SRC command
-     docker volume inspect [OPTIONS] VOLUME [VOLUME...]
-     #+END_SRC
-     For example:
-     #+BEGIN_SRC command
-     docker volume create --name volume_1
-     #+END_SRC
-     #+BEGIN_SRC command
-     docker volume inspect volume_1
-     [
+  + To get information about one or more volumes
+    #+BEGIN_SRC command
+    $ docker volume inspect [OPTIONS] VOLUME [VOLUME...]
+    #+END_SRC
+    For example:
+    #+BEGIN_SRC command
+    $ docker volume create --name volume_1
+    #+END_SRC
+    #+BEGIN_SRC command
+    docker volume inspect volume_1
+    [
        {
           "Name": "volume_1",
           "Driver": "local",
           "Mountpoint": "/var/lib/docker/volumes/volume_1/_data",
           "Labels": {}
        }
-     ] 
-     #+END_SRC
+    ] 
+    #+END_SRC
 *** Delete Volume
-    + To delete one or more volumes
-      #+BEGIN_SRC command
-      docker volume rm [OPTIONS] VOLUME [VOLUME...]
-      #+END_SRC  
-      + You cannot remove a volume that is in use by a container. 
+  + To delete one or more volumes
+    #+BEGIN_SRC command
+    $ docker volume rm [OPTIONS] VOLUME [VOLUME...]
+    #+END_SRC
+    For Example:
+    #+BEGIN_SRC command
+    $ docker volume rm volume_1
+    volume_1
+    #+END_SRC  
+  + You cannot remove a volume which is currently used by a container. 
 *** List Volumes
-    + To list all the volumes present
-      #+BEGIN_SRC command
-      docker volume ls [OPTIONS]
-      #+END_SRC
-      #+BEGIN_SRC command
-      DRIVER              VOLUME NAME
-      local               volume_1
-      local               volume_2
-      #+END_SRC
+  + To list all the volumes present
+    #+BEGIN_SRC command
+    $ docker volume ls [OPTIONS]
+    #+END_SRC
+    #+BEGIN_SRC command
+    $ docker volume ls
+    DRIVER              VOLUME NAME
+    local               volume_1
+    local               volume_2
+    #+END_SRC
 *** Note:
-    We added a new data-volume
+    + We cannot add or copy a file of memory more than the free memory
+      available in a container 
+    + We can check free memory inside a container as follows:
     #+BEGIN_SRC command
-    docker run -it -v hello:/test ubuntu:14.04 bash
+    $ docker exec <container ID> df -h
     #+END_SRC
-    We tried to copy a file of 20GB from host machine to container using SCP
     #+BEGIN_SRC command
-    scp -r meghana@10.2.59.17:/media .
+    $ docker exec ec164228902a df -h
+    Filesystem      Size  Used Avail Use% Mounted on
+    none             37G   28G  7.2G  80% /
+    tmpfs           1.9G     0  1.9G   0% /dev
+    tmpfs           1.9G     0  1.9G   0% /sys/fs/cgroup
+    /dev/sda9        37G   28G  7.2G  80% /etc/hosts
+    shm              64M     0   64M   0% /dev/shm
     #+END_SRC
-    But it was not able to copy more than 9GB after that it shows dick space
-    exeeded.
-    So we mounted the host directory to the contaier successfully and we are
-    able to access those files from container
+    + According to this we cannot copy a file of more than 7.2G into the
+      container.
+    + But you can access that file from your machine by using the 'Mount host
+      directory' feature of Docker data volumes.
+    + Save the file in your some where in your host directory and mount that as
+      mentioned in the above section(Mount Host Directory).
 ** Taking backup of Docker Containers and images
 *** Backup Docker Images
-   + Save the Docker Image
-     #+BEGIN_SRC command
-     docker save -o <name_of_backup.tar> <image>
-     #+END_SRC
-     For Example:
-     #+BEGIN_SRC command
-     $ docker save -o bkb_image1.tar image1
-     #+END_SRC
-     + This tar file will be stored in your current directory
-  
-   + Load the backup image
-     #+BEGIN_SRC command
-     docker load -i <name_of_backup.tar>
-     #+END_SRC
-     For Example:
-     #+BEGIN_SRC command
-     $ docker load -i bkb_image1.tarx
-     #+END_SRC
-     - If you run =docker images= you can see your image 
+  + Save the Docker Image ::
+    #+BEGIN_SRC command
+    $ docker save -o <name_of_backup.tar> <image>
+    #+END_SRC
+    For Example:
+    #+BEGIN_SRC command
+    $ docker save -o bkb_image1.tar image1
+    #+END_SRC
+    + This tar file will be stored in your current directory.
+    + Thus you can save your images and backup them.  
+  + Load the backup image ::
+    #+BEGIN_SRC command
+    $ docker load -i <name_of_backup.tar>
+    #+END_SRC
+    For Example:
+    #+BEGIN_SRC command
+    $ docker load -i bkb_image1.tarx
+    #+END_SRC
+    + If you run =docker images= you can see your image 
 *** Backup Docker Containers
-   + Export docker containers
-     #+BEGIN_SRC command
-     docker export -o <backup_file_name.tar> <container ID> 
-     #+END_SRC
-     For Example:
-     #+BEGIN_SRC command
-     $ docker export -o bkb_cntd1.tar 07c5614d5a40
-     #+END_SRC
-     + Exports the contents of a container's filesystem as a tar archive
-     + The =docker export= command does not export the contents of volumes
-       associated with the container.
+  + Export docker containers ::
+    #+BEGIN_SRC command
+    $ docker export -o <backup_file_name.tar> <container ID> 
+    #+END_SRC
+    For Example:
+    #+BEGIN_SRC command
+    $ docker export -o bkb_cntd1.tar 07c5614d5a40
+    #+END_SRC
+    + Exports the contents of a container's filesystem as a tar archive.
+    + The =docker export= command does not export the contents of volumes
+      associated with the container.
 
-   + Import docker containers
-     #+BEGIN_SRC command
-     docker import <backup_file_name.tar>
-     #+END_SRC
-     For Example:
-     #+BEGIN_SRC command
-     $ docker import bkb_cntd1.tar
-     #+END_SRC
-     + This command will create a new image and then using that image you have
-       to create your container
+  + Import docker containers ::
+    #+BEGIN_SRC command
+    $ docker import <backup_file_name.tar>
+    #+END_SRC
+    For Example:
+    #+BEGIN_SRC command
+    $ docker import bkb_cntd1.tar
+    #+END_SRC
+    + This command will create a new image and then using that image you have
+      to create your container.
 
 * Docker Hub
 ** what is a Docker hub?
-The Docker Hub is a public registry maintained by Docker, Inc. It contains
-images you can download and use to build containers. It also provides
-authentication, work group structure, workflow tools like webhooks and build
-triggers, and privacy tools like private repositories for storing images you
-don't want to share publicly.
-You can refer [[https://docs.docker.com/docker-hub/][here]]
+   The Docker Hub is a public registry maintained by Docker, Inc. It contains
+   images you can download and use to build containers. It also provides
+   authentication, work group structure, workflow tools like webhooks and build
+   triggers, and privacy tools like private repositories for storing images you
+   don't want to share publicly.
+   You can refer [[https://docs.docker.com/docker-hub/][here]]
 ** How to use Docker hub?
 *** Account creation and login
     + create a Docker ID(You can do this through  [[https://hub.docker.com/][Docker Hub]])
     + Once you have a Docker ID, log into your account from the command line
     #+BEGIN_SRC command
-    docker login
+    $ docker login
     Login with your Docker ID to push and pull images from Docker Hub. If you don't have a Docker ID, head over to https://hub.docker.com to create one.
     Username: 
     Password: 
@@ -766,32 +795,60 @@ You can refer [[https://docs.docker.com/docker-hub/][here]]
     You can search the Docker Hub registry via its search interface or by using the
     command line interface:
     #+BEGIN_SRC command
-    docker search [image]
+    $ docker search [image]
+    #+END_SRC
+    For Example:
+    #+BEGIN_SRC 
+    $ docker search ubuntu:14.04
+    NAME                                            DESCRIPTION                                     STARS     OFFICIAL   AUTOMATED
+    chef/ubuntu-14.04                               An Ubuntu 14.04 Docker Image with Chef Con...   19                   
+    saltstack/ubuntu-14.04-minimal                                                                  7                    [OK]
+    saltstack/ubuntu-14.04                                                                          5                    [OK]
+    brook/ubuntu-14.04.3-baidupcs                   https://github.com/GangZhuo/BaiduPCS ...        3                    [OK]
+    breezeight/test-kitchen-ubuntu-14.04            Ubunti 14.04 with chef omnibus installed        1                    [OK]
+    simphonyproject/ubuntu-14.04-remote             Ubuntu 14.04 with Remote Access Support         1                    [OK]
+    fernandoacorreia/ubuntu-14.04-oracle-java-1.7   Docker image with Ubuntu 14.04 and Oracle ...   1                    [OK]
+    mostalive/ubuntu-14.04-oracle-jdk8                                                              1                    [OK]
+    linuxmalaysia/docker-ubuntu-14.04-harden        Docker Ubuntu harden for security with SSH...   1                    [OK]
+    visualjeff/ubuntu-14.04                                                                         0                    [OK]
     #+END_SRC
 *** Pull images
-    Once you've found the image you want, you can download it with
+    Once you've found the image you want, you can download it with =docker pull=
     #+BEGIN_SRC command
-    docker pull <imagename>:
+    $ docker pull [image]:[tag]
+    #+END_SRC
+    For Example:
+    #+BEGIN_SRC 
+    $ docker pull ubuntu:14.04 
+    14.04: Pulling from library/ubuntu
+    56eb14001ceb: Pulling fs layer 
+    7ff49c327d83: Downloading [========================>                          ] 49.15 kB/101.4 kB
+    6e532f87f96d: Download complete 
+    3ce63537e70c: Pulling fs layer 
     #+END_SRC
 *** Push images
-    In order to push an image int your docker hub the name of the image
+    In order to push an image in your docker hub the name of the image
     should be same as that of the repository in your docker hub account. 
     #+BEGIN_SRC command
-    $ docker push yourname/newimage
+    $ docker push yourname/newimage:tag
+    #+END_SRC
+    For Example:
+    #+BEGIN_SRC command
+    $ docker push meghanab/myapp:1.0
     #+END_SRC
     The image will then be uploaded and available for use by your team-mates and/or
     the community.You can also make the repository private.
     For more info refer this [[https://docs.docker.com/engine/userguide/containers/dockerrepos/][link]]
 * Performance Testing
-  + We trird to analyse the performance of Docker containers by giving load on
+  + We tried to analyse the performance of Docker containers by giving load on
     197 Docker containers(each container deployed with one lab) using the
     following methods:
 ** Test using curl command and crontab
-    Curl is a tool to transfer data from or to a server, using one of the
-    protocol HTTP, HTTPS out of many supported protocols. Using this feature of
-    curl command, we tried generating load on containers. Here are the steps -
+   Curl is a tool to transfer data from or to a server, using one of the
+   protocol HTTP, HTTPS out of many supported protocols. Using this feature of
+   curl command, we tried generating load on containers. Here are the steps -
 
-+ 1. Write a script to send 10000 curl request to a container ::
++ Write a script to send 10000 curl request to a container ::
   #+BEGIN_SRC command
   root@vlead-pc:~/load-scripts# vim load-test-script.sh
   #+END_SRC
@@ -809,7 +866,7 @@ You can refer [[https://docs.docker.com/docker-hub/][here]]
 	count=`expr $count + 1`
   done
   #+END_SRC 
-+ 2. Write a script to generate crontab entries for executing load-testing script for all containers ::
++ Write a script to generate crontab entries for executing load-testing script for all containers ::
   #+BEGIN_SRC command
   root@vlead-pc:~/load-scripts# vim create-crontab.sh
   #+END_SRC
@@ -825,66 +882,66 @@ You can refer [[https://docs.docker.com/docker-hub/][here]]
       a=`expr $a + 1`
   done
   #+END_SRC
-+ 3. Copy paste the ouput of above script in crontab ::
++ Copy paste the ouput of above script in crontab ::
   #+BEGIN_SRC command
-  crontab -e
+  $ crontab -e
   #+END_SRC 
  
-+ 4. Write a script to check the =docker stats= ::
-   #+BEGIN_SRC command
-   root@vlead-pc:~/load-scripts# cat get-stat.sh 
-   #+END_SRC
++ Write a script to check the =docker stats= ::
+  #+BEGIN_SRC command
+  root@vlead-pc:~/load-scripts# cat get-stat.sh 
+  #+END_SRC
 
-   #+BEGIN_SRC command
-   #!/bin/sh
-
-   a=0
-   while [ $a -lt 100 ]
-   do
+  #+BEGIN_SRC command
+  #!/bin/sh
+  
+  a=0
+  while [ $a -lt 100 ]
+  do
        echo "`docker stats --no-stream=true`"
        a=1
        echo ""
-   done
-   #+END_SRC
-+ 5. Write a script to analyse output of docker stats ::
-   #+BEGIN_SRC command
-   #!/bin/sh
+  done
+  #+END_SRC
++ Write a script to analyse output of docker stats ::
+  #+BEGIN_SRC command
+  #!/bin/sh
 
-   cat $1 | awk '{print $2}' | sed 's/%//g' | sed '/CPU/d' | sed '/^$/d' > ouput.txt
-   split -l 197 ouput.txt
-   for i in `find x*`
-   do
+  cat $1 | awk '{print $2}' | sed 's/%//g' | sed '/CPU/d' | sed '/^$/d' > ouput.txt
+  split -l 197 ouput.txt
+  for i in `find x*`
+  do
       echo "`awk '{ sum += $1 } END { print sum }' $i`"
-   done
-   #+END_SRC
-+ 6. Following graphs were obtained ::
+  done
+  #+END_SRC
++ Following graphs were obtained ::
    [[./images/CPU-utilization-bar-graph.png]]
    [[./images/CPU-utilizaton-line-graph.png]]
    [[./images/memory-utilization-bar-graph.png]]
    [[./images/memory-utilization-line-graph.png]] 
 ** Test using siege and sar commands
-+ Siege is an HTTP load testing and benchmarking utility that can be used to
-  measure the performance of a web server when under duress. It evaluates the
-  amount of data transferred, response time of the server, transaction rate,
-  throughput, concurrency, and times the program returned okay
-+ sar command is used to collect, report, or save system activity information.
-+ Using the =siege= command we tried to generate load on the
-  containers.Following are the steps:
+ + Siege is an HTTP load testing and benchmarking utility that can be used to
+   measure the performance of a web server when under duress. It evaluates the
+   amount of data transferred, response time of the server, transaction rate,
+   throughput, concurrency, and times the program returned okay
+ + sar command is used to collect, report, or save system activity information.
+ + Using the =siege= command we tried to generate load on the
+   containers.Following are the steps:
   
-+ 1.Install sar,siege and configure them ::
-    To install sar refer [[http://www.vishalvyas.com/2012/05/installing-system-activity-reporter-sar.html][here]].
-    To install siege refer [[https://www.linode.com/docs/tools-reference/tools/load-testing-with-siege][here]].
-+ 2.Use sar command to get the memory(RAM) usage statistics when the Containes are ::
++ Install sar,siege and configure them ::
+    + To install sar refer [[http://www.vishalvyas.com/2012/05/installing-system-activity-reporter-sar.html][here]].
+    + To install siege refer [[https://www.linode.com/docs/tools-reference/tools/load-testing-with-siege][here]].
++ Use sar command to get the memory(RAM) usage statistics when the Containes are ::
     + Stopped
     + Started
     + Containers were running
     + Apache is started in containers
     + Apache is running in containers 
     #+BEGIN_SRC command
-    sar -r 5 10
+    $ sar -r 5 10
     #+END_SRC
     + Redirect the output to a file in each case
-+ 4. Write a script to generate siege commands ::
++ Write a script to generate siege commands ::
   #+BEGIN_SRC command
   root@vlead-pc:~/load-scripts# vim generate-siege-file.sh 
   #+END_SRC
@@ -900,16 +957,15 @@ You can refer [[https://docs.docker.com/docker-hub/][here]]
   done
   #+END_SRC
   + Running this script will generate siege commands for all the containers
-+ 5.Copy these siege commands to siege-test.sh ::
++ Copy these siege commands to siege-test.sh ::
   #+BEGIN_SRC command
-  sh generate-siege-file.sh [no. of users] [Total time] > siege-test.sh
+  $ sh generate-siege-file.sh [no. of users] [Total time] > siege-test.sh
   #+END_SRC
-+ 6.Run =sar -r [time interval] [no of times]= and =sh siege-test.sh=
-  parallely and redirect the output of =sar= command to output.txt
-+ 7.Change the values of 'no of users' and 'total time' in step 7 and repeat
-  step 8 for each set of values and redirect the output of =sar= command to
-  output.txt
-+ 8.Take the values of 'Time' and '%mem used' from output file and depict
++ Run =sar -r [time interval] [no of times]= and =sh siege-test.sh=
+  parallely and redirect the output of =sar= command to output file
++ Change the values of 'no of users' and 'total time' and repeat above for
+  each set of values and redirect the output of =sar= command to output file
++ Take the values of 'Time' and '%mem used' from output file and depict
   graphs. You can view the data [[./sar-test.org][here]]
   
   The following graphs were obtained:
@@ -925,32 +981,33 @@ You can refer [[https://docs.docker.com/docker-hub/][here]]
      to reboot your system.
    + Here we tried to run fork bomb in one of the containers
 *** Testing Docker Container without limiting its memory
-   + 1.Create and run a container :
+   + Create and run a container ::
      #+BEGIN_SRC command
      $ docker run -it ubuntu:14.04 bash
      root@ec164228902a:~# =:(){ :|: & };:
      #+END_SRC
      + This container now will ask for more system resources from host
        until you run of system resources.
-   + 2.Since we ran out of resources, the host machine goes down and need to
-       be rebooted
-   + 3.Thus we found out that the Docker container asks for system
-       resources from host when ever required without any limit.
-       Due to this if the container goes down it will crash the host.
-   + 4.So we have to limit the memory usage of the container.
+   + Since we ran out of resources, the host machine goes down and need to
+     be rebooted
+   + Thus we found out that the Docker container asks for system
+     resources from host when ever required without any limit.
+     Due to this if the container goes down it will crash the host.
+   + So we have to limit the memory usage of the container.
 
 *** Testing Docker container after limiting its memory 
-   + 1.Create and run a container(include memory limit)
+   + Create and run a container(include memory limit)
      #+BEGIN_SRC command
      $ docker run -it -m=200M ubuntu:14.04
      root@ae164798902a:~# =:(){ :|: & };        
      #+END_SRC
-   + 2.This container will use memory of 200 MB only. If it asks for more than
-       200 MB then the container stop.
-   + 3.To start the container again you have to use =docker start= command and
-       the container will start normally.
-   + 4.Thus by limiting memory of a container, if any container crashes the
-       others will be still running normally
+   + This container will use memory of 200 MB only. If it asks for more than
+     200 MB then the container stop.
+   + To start the container again you have to use =docker start= command and
+     the container will start normally.
+   + Thus by limiting memory of a container, if any container crashes the
+     others will be still running normally
+* Conclusion
 * Reference
 + Docker Tutorials -  https://training.docker.com/self-paced-training
 + Benefits of Docker - https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/7/html/7.0_Release_Notes/sect-Red_Hat_Enterprise_Linux-7.0_Release_Notes-Linux_Containers_with_Docker_Format-Advantages_of_Using_Docker.html
@@ -966,3 +1023,5 @@ You can refer [[https://docs.docker.com/docker-hub/][here]]
 + curl command - https://curl.haxx.se/docs/manpage.html
 + Load testing with siege -
   https://www.linode.com/docs/tools-reference/tools/load-testing-with-siege
++ Docker forum group - https://groups.google.com/forum/#!forum/docker-user
++ Docker community forums - https://forums.docker.com/
