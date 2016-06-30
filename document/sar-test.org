@@ -1,6 +1,6 @@
 #+Title: Data for Sar and siege test
 #+Date: 28th July, 2016
-* Sar command output when containers (197) were not running(Stopped)
+* sar command output when containers (197) were not running(Stopped)
 #+BEGIN_SRC command
 
 root@vlead-pc:~# sar -r 5 10
@@ -21,7 +21,7 @@ Linux 3.13.0-24-generic (vlead-pc) 	Tuesday 28 June 2016 	_x86_64_	(4 CPU)
 root@vlead-pc:~# 
 #+END_SRC
 
-* sar command output when containers were started 
+* sar command output when containers were starting 
 #+BEGIN_SRC command
 root@vlead-pc:~# sar -r 3 100
 Linux 3.13.0-24-generic (vlead-pc) 	Tuesday 28 June 2016 	_x86_64_	(4 CPU)
@@ -68,7 +68,7 @@ Linux 3.13.0-24-generic (vlead-pc) 	Tuesday 28 June 2016 	_x86_64_	(4 CPU)
 
 #+END_SRC
 
-* sar command when containers wehre already running 
+* sar command when containers were running 
 
 #+BEGIN_SRC command
 root@vlead-pc:~# sar -r 3 10
@@ -90,7 +90,7 @@ root@vlead-pc:~#
 
 #+END_SRC
 
-* sar command when apache was started in all containers  
+* sar command when apache was starting in all containers  
 
 #+BEGIN_SRC command
 root@vlead-pc:~# sar -r 5 50
@@ -152,7 +152,7 @@ root@vlead-pc:~#
 
 #+END_SRC
 
-* sar command when apache is already running on all containers
+* sar command when apache was running on all containers
 
 #+BEGIN_SRC command 
 root@vlead-pc:~# sar -r 3 10
@@ -173,8 +173,7 @@ Linux 3.13.0-24-generic (vlead-pc) 	Tuesday 28 June 2016 	_x86_64_	(4 CPU)
 root@vlead-pc:~#
 #+END_SRC
 
-
-* sar command with siege
+* sar command output when siege was running with:
 ** 2 users for 5 seconds 
 #+BEGIN_SRC command
 root@vlead-pc:~# sar -r 2 200
@@ -193,7 +192,7 @@ Linux 3.13.0-24-generic (vlead-pc) 	Tuesday 28 June 2016 	_x86_64_	(4 CPU)
 
 #+END_SRC
 
-** 2 users 10 seconds
+** 2 users for 10 seconds
 #+BEGIN_SRC command
 root@vlead-pc:~# sar -r 2 200
 Linux 3.13.0-24-generic (vlead-pc) 	Tuesday 28 June 2016 	_x86_64_	(4 CPU)
@@ -253,7 +252,7 @@ Linux 3.13.0-24-generic (vlead-pc) 	Tuesday 28 June 2016 	_x86_64_	(4 CPU)
 Average:       784789   7258371     90.24     98189   2333051  49142533    610.99   3865854   1843447      4063
 
 #+END_SRC
-** users 5 time 10 
+** 5 users for 10 seconds 
 
 #+BEGIN_SRC command
 root@vlead-pc:~# sar -r 2 200
@@ -274,7 +273,7 @@ Average:       617079   7426081     92.33     59724   2157764  51908026    645.3
 
 #+END_SRC
 
-** 5 users 15 seconds 
+** 5 users for 15 seconds 
 
 #+BEGIN_SRC command
 root@vlead-pc:~# sar -r 2 200
@@ -298,7 +297,7 @@ Average:       584006   7459154     92.74     42248   2094823  52613022    654.1
 
 #+END_SRC
 
-** 10 users 5 seconds
+** 10 users for 5 seconds
 
 #+BEGIN_SRC command
 root@vlead-pc:~# sar -r 2 200
@@ -316,7 +315,7 @@ Linux 3.13.0-24-generic (vlead-pc) 	Tuesday 28 June 2016 	_x86_64_	(4 CPU)
   Average:       904039   7139121     88.76     16403   1627081  55770614    693.39   3962150   1434583      4978
 #+END_SRC
 
-** 10 users 10 seconds
+** 10 users for 10 seconds
 
 #+BEGIN_SRC command
 
