@@ -16,7 +16,6 @@
        Containers include the minimal runtime requirements of the application,
        reducing their size and allowing them to be deployed quickly.
 
-
   + Portability across machines ::
        An application and all its dependencies can be bundled into a single
        container that is independent from the host
@@ -623,6 +622,7 @@ images automatically by reading the instructions from a Dockerfile.
    + Volumes are initialized when a container is created.
    + Data volumes can be shared and reused among containers.
    + Changes to a data volume will not be included when you update an image.
+   [[./images/volumes.png]]
 *** Create Volume
    + To create anew volume
      #+BEGIN_SRC command
