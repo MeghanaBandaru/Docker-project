@@ -11,7 +11,7 @@
   consistently deploy applications regardless of environment.
   You can refer it [[https://www.docker.com/what-docker#/copy1][here.]]  
 * Motivation 
-  To get a thorough introduction to docker along with all its features so that
+  To get indepth knowledge of Docker along with all its features so that
   we can shift our current architecture of hosting labs in Virtual Machines to
   Docker Containers 
 * Benefits of Docker
@@ -986,6 +986,9 @@
      the container will start normally.
    + Thus by limiting memory of a container, if any container crashes the
      others will be still running normally
+     
+* Conclusion
+With our understanding on docker, there are more features of our interest and limitations are rare. Docker looks a good option to containerize current VM based architecture, reducing the cost to half and stabilizing it with increased scalability. 
 * Reference
 + Docker Tutorials -  https://training.docker.com/self-paced-training
 + Benefits of Docker - https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/7/html/7.0_Release_Notes/sect-Red_Hat_Enterprise_Linux-7.0_Release_Notes-Linux_Containers_with_Docker_Format-Advantages_of_Using_Docker.html
