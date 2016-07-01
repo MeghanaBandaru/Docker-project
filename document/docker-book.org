@@ -2,7 +2,7 @@
 #+Author: Meghana Bandaru
 #+Date: June 9, 2016
 * Introduction
-  This document aims at detailing the Docker with everything tested and confirmed.
+  This document aims at detailing Docker with everything tested and confirmed.
 * Motivation 
   To get indepth knowledge of Docker along with all its features so that
   we can shift VLEAD's current architecture of hosting labs in Virtual Machines to
