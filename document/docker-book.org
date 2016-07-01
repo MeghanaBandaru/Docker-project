@@ -1,7 +1,12 @@
 #+Title:Docker 1.11.2
 #+Author: Meghana Bandaru
 #+Date: June 9, 2016
-
+* Introduction
+  This document aims at detailing the Docker with everything tested and confirmed.
+* Motivation 
+  To get indepth knowledge of Docker along with all its features so that
+  we can shift VLEAD's current architecture of hosting labs in Virtual Machines to
+  Docker Containers 
 * Introduction to Docker
   Docker is an open-source technology that that allows you to build, run, test,
   and deploy distributed applications inside software containers. It allows you
@@ -10,10 +15,6 @@
   system libraries, etc. Docker enables you to quickly, reliably, and
   consistently deploy applications regardless of environment.
   You can refer it [[https://www.docker.com/what-docker#/copy1][here.]]  
-* Motivation 
-  To get indepth knowledge of Docker along with all its features so that
-  we can shift our current architecture of hosting labs in Virtual Machines to
-  Docker Containers 
 * Benefits of Docker
   + Rapid application deployment ::
     Containers include the minimal runtime requirements of the application,
@@ -782,7 +783,7 @@
     $ docker search [image]
     #+END_SRC
     For Example:
-    #+BEGIN_SRC 
+    #+BEGIN_SRC command 
     $ docker search ubuntu:14.04
     NAME                                            DESCRIPTION                                     STARS     OFFICIAL   AUTOMATED
     chef/ubuntu-14.04                               An Ubuntu 14.04 Docker Image with Chef Con...   19                   
@@ -802,7 +803,7 @@
     $ docker pull [image]:[tag]
     #+END_SRC
     For Example:
-    #+BEGIN_SRC 
+    #+BEGIN_SRC command 
     $ docker pull ubuntu:14.04 
     14.04: Pulling from library/ubuntu
     56eb14001ceb: Pulling fs layer 
