@@ -9,41 +9,42 @@
   containing everything the software needs to run: code, runtime, system tools,
   system libraries, etc. Docker enables you to quickly, reliably, and
   consistently deploy applications regardless of environment.
-  You can refer it [[https://www.docker.com/what-docker#/copy1][here.]]
-  
-* Motivation  
+  You can refer it [[https://www.docker.com/what-docker#/copy1][here.]]  
+* Motivation 
+  To get a thorough introduction to docker along with all its features so that
+  we can shift our current architecture of hosting labs in Virtual Machines to
+  Docker Containers 
 * Benefits of Docker
   + Rapid application deployment ::
-       Containers include the minimal runtime requirements of the application,
-       reducing their size and allowing them to be deployed quickly.
+    Containers include the minimal runtime requirements of the application,
+    reducing their size and allowing them to be deployed quickly.
 
   + Portability across machines ::
-       An application and all its dependencies can be bundled into a single
-       container that is independent from the host
-       version of Linux kernel, platform distribution, or deployment model. This
-       container can be transfered to another machine that runs Docker, and
-       executed there without compatibility issues.
+    An application and all its dependencies can be bundled into a single
+    container that is independent from the host version of Linux kernel,
+    platform distribution, or deployment model. This container can be
+    transferred to another machine that runs Docker, and executed there
+    without compatibility issues.
 
   + Version control ::
-     You can track successive versions of a container, inspect differences, or roll-back to previous
-     versions. That means your container can be easily rolled back when required.
+    You can track successive versions of a container, inspect differences, or roll-back to previous
+    versions. That means your container can be easily rolled back when required.
 
   + Sharing ::
-     You can use a remote repository to share your container with others. 
+    You can use a remote repository to share your container with others. 
 
   + Lightweight and minimal overhead ::
-     Docker images are typically very small, which facilitates rapid delivery
-     and reduces the time to deploy new application containers.
+    Docker images are typically very small, which facilitates rapid delivery
+    and reduces the time to deploy new application containers.
 
   + Simplified maintenance ::
-     Docker reduces effort and risk of problems with application dependencies. 
-
+    Docker reduces effort and risk of problems with application dependencies. 
 * Docker Architecture
   + Docker uses a client-server architecture
   + The Docker client talks to the Docker daemon, which does the heavy lifting
     of building, running, and distributing your Docker containers
-  
-      [[./images/architecture.png]]
+   
+                      [[./images/architecture.png]]
 * Getting started with Docker
 ** Docker images and containers
  + Docker Image ::
@@ -167,7 +168,6 @@
      that it is ready to start when you need it.
    + Creates a writeable container layer over the specified image.   
    + A container created does not start on it's own and is to be started.
-   
  + Start a container ::
    #+BEGIN_SRC command
    $ docker start [OPTIONS] CONTAINER [CONTAINER...]
@@ -186,7 +186,6 @@
    $ docker stop e76ccff0a41a
    e76ccff0a41a
    #+END_SRC
-
 +  To restart one or more container ::
    #+BEGIN_SRC command
    $ docker restart [OPTIONS] CONTAINER [CONTAINER...]
@@ -196,7 +195,6 @@
    $ docker restart e76ccff0a41a
    e76ccff0a41a
    #+END_SRC
-
  + Destroy a container ::
    #+BEGIN_SRC command
    $ docker rm [OPTIONS] CONTAINER [CONTAINER...]
@@ -210,7 +208,6 @@
    $ docker rm e76ccff0a41a
    e76ccff0a41a
    #+END_SRC
-
 ** Naming a container
    + If you do not specify the name of the container docker will automatically
      assume any random name.
@@ -231,7 +228,6 @@
      #+BEGIN_SRC command
      $ docker rename lab1_cae01 lab2_cse02
      #+END_SRC
-
 ** Giving a hostname to container
  + To give host name to container you must use =-h= flag with the =docker run= command:
    #+BEGIN_SRC command 
@@ -297,7 +293,7 @@
    meghana/new_user      1                   b5900443b2d7        2 weeks ago         188.3 MB
    centos                7                   904d6c400333        3 weeks ago         196.8 MB
    ubuntu                14.04               8f1bd21bd25c        4 weeks ago         188 MB
-#+END_SRC
+   #+END_SRC
 ** List processes running inside a container 
  + Display the running processes of a container ::
    #+BEGIN_SRC command
@@ -308,8 +304,7 @@
    $ docker top ec164228902a
    UID            PID             PPID           C              STIME           TTY            TIME             CMD
    root           5207            5192           0              20:32           pts/9          00:00:00         bash
-   #+END_SRC
-   
+   #+END_SRC   
 ** Running your container in detached mode
    + To run a container in the background as soon as it is created you have to
      specify =-d= flag along with the =docker run= command
@@ -323,8 +318,7 @@
      $ docker run -d ubuntu:14.04 bash
      698de53f5f4b151122e18b51d4abb813b4e1dff10e30472791dd5ec336fb4b10
      $
-     #+END_SRC
- 
+     #+END_SRC 
 ** Execute a command inside a container from host machine 
  + You can execute a command inside a container from the host machine
    provided the container is in running state. Otherwise you have to start
@@ -350,7 +344,6 @@
    5 packets transmitted, 5 received, 0% packet loss, time 3997ms
    rtt min/avg/max/mdev = 0.033/0.049/0.055/0.008 ms
    #+END_SRC
-
    + You can use various flags with this command
    #+BEGIN_SRC command
      -d                Detached mode: run command in the background
@@ -405,7 +398,6 @@
      07c5614d5a40        ubuntu:14.04        "bash"              21 minutes ago      Up 21 minutes                           evil_fermi
      ec164228902a        ubuntu:14.04        "bash"              4 days ago          Up 32 minutes                           stoic_bhabha
      #+END_SRC
-
    + Method 2 :: 
      + Using Attach command
      #+BEGIN_SRC command
@@ -422,7 +414,6 @@
      #+BEGIN_SRC command
      CTRL+P+Q
      #+END_SRC
- 
 ** Auto restart Containers 
    If your host machine shuts down, all container will be stopped. Once your
    restart your machine, all container should automatically start. To add such
@@ -437,7 +428,6 @@
    #+END_SRC
    + We need to specify whether you want to auto-start your container at the
      time of its creation itself.
-
 ** Resource allocation options for Docker containers
    + Using the =-m= flag with =docker run= command we can limit the memory(RAM)
      usage of the containers
@@ -465,20 +455,21 @@
    packages installed hence replicating the state of the container. This helps
    in creating a reusable image for launching multiple containers with
    customized applications of your need. 
-
    #+BEGIN_SRC command
    $ docker commit <container ID> <Repository>:<tag>
    #For Example:
    $ docker commit ec164228902 meghanab/myapp:1.0
    sha256:4069d3511b08f810c6b725f64360f10148a46a8e5f66a111304585e33af1e912
    #+END_SRC
-   
 ** Dockerfile
-   A Dockerfile is a text document that contains all the commands you would
-   normally execute manually in order to build a Docker image. Docker can build
-   images automatically by reading the instructions from a Dockerfile.
-   + Thus we can say that Dockerfike is a configuration file used to build docker images
-   + It is more effective and easier way compared to =docker commit=
+   Dockerfiles are scripts containing a successive series of instructions,
+   directions, and commands which are to be executed to form a new docker
+   image. Each command executed translates to a new layer forming the end
+   product. They basically replace the process of doing everything manually and
+   repeatedly. When a Dockerfile is finished executing, you end up
+
+   having formed an image, which then you use to start (i.e. create) a new
+   container.It is more effective and easier way compared to =docker commit=
  + Writing Dockerfile ::
    + Docker file instructions:
    + =FROM=: for specifying the base image
@@ -490,9 +481,7 @@
    RUN apt-get install -y  vim
    RUN apt-get insatll -y curl
    #+END_SRC
-
         OR
-
    #+BEGIN_SRC command
    #Just another way of Docker File
    $ vim Dockefile
@@ -526,7 +515,6 @@
    #+END_SRC
    + Thus a new container will be created and started with vim and curl
      pre-installed. Similarly we can install other packages.
-
 *** Some more info on Dockerfile
   + CMD Instruction ::
     + Defines a default command that will execute when the container is
@@ -563,7 +551,6 @@
       #+BEGIN_SRC command
       $ docker run <repository>:<tag> 127.0.0.1
       #+END_SRC
-
   + EXPOSE instruction ::
     The =EXPOSE= command is used to associate a specified port to enable networking
     between the running process inside the container and the outside world
@@ -582,7 +569,6 @@
           OR   
     $ ADD ["<src>",... "<dest>"] (this form is required for paths containing whitespace)
     #+END_SRC
-
 ** Run a container as a server 
   + We can run a container as long as you don't kill the process with PID 1
   + If a process with PID 1 is killed inside a container then the container will
@@ -758,7 +744,6 @@
     + Exports the contents of a container's filesystem as a tar archive.
     + The =docker export= command does not export the contents of volumes
       associated with the container.
-
   + Import docker containers ::
     #+BEGIN_SRC command
     $ docker import <backup_file_name.tar>
@@ -769,7 +754,6 @@
     #+END_SRC
     + This command will create a new image and then using that image you have
       to create your container.
-
 * Docker Hub
 ** what is a Docker hub?
    The Docker Hub is a public registry maintained by Docker, Inc. It contains
@@ -847,12 +831,10 @@
    Curl is a tool to transfer data from or to a server, using one of the
    protocol HTTP, HTTPS out of many supported protocols. Using this feature of
    curl command, we tried generating load on containers. Here are the steps -
-
 + Write a script to send 10000 curl request to a container ::
   #+BEGIN_SRC command
   root@vlead-pc:~/load-scripts# vim load-test-script.sh
   #+END_SRC
-
   #+BEGIN_SRC command
   #!/bin/sh
 
@@ -886,12 +868,10 @@
   #+BEGIN_SRC command
   $ crontab -e
   #+END_SRC 
- 
 + Write a script to check the =docker stats= ::
   #+BEGIN_SRC command
   root@vlead-pc:~/load-scripts# cat get-stat.sh 
   #+END_SRC
-
   #+BEGIN_SRC command
   #!/bin/sh
   
@@ -994,7 +974,6 @@
      resources from host when ever required without any limit.
      Due to this if the container goes down it will crash the host.
    + So we have to limit the memory usage of the container.
-
 *** Testing Docker container after limiting its memory 
    + Create and run a container(include memory limit)
      #+BEGIN_SRC command
@@ -1007,11 +986,11 @@
      the container will start normally.
    + Thus by limiting memory of a container, if any container crashes the
      others will be still running normally
-* Conclusion
 * Reference
 + Docker Tutorials -  https://training.docker.com/self-paced-training
 + Benefits of Docker - https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/7/html/7.0_Release_Notes/sect-Red_Hat_Enterprise_Linux-7.0_Release_Notes-Linux_Containers_with_Docker_Format-Advantages_of_Using_Docker.html
 + Docker Architecture - https://docs.docker.com/v1.8/introduction/understanding-docker/
++ Install Docker - https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-getting-started
 + Docker glossary -  https://docs.docker.com/engine/reference/glossary/#union-file-system 
 + Docker Commands - https://docs.docker.com/engine/reference/commandline/
 + Docker file reference - https://docs.docker.com/engine/reference/builder/
